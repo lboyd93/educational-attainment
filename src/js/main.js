@@ -36,9 +36,10 @@ require([
 						},
 						{
 							type: "pie-chart",
-							title: "Highest Degree - Female",
+							title: "Highest Education - Female",
 							value: {
 								fields: [
+									"expression/no-hs-degree-female",
 									"B15002_028E",
 									"B15002_031E",
 									"B15002_032E",
@@ -50,9 +51,10 @@ require([
 						},
 						{
 							type: "pie-chart",
-							title: "Highest Degree - Male",
+							title: "Highest Education - Male",
 							value: {
 								fields: [
+									"expression/no-hs-degree-male",
 									"B15002_011E",
 									"B15002_014E",
 									"B15002_015E",
@@ -63,6 +65,22 @@ require([
 							},
 						},
 					],
+				},
+			],
+			expressionInfos: [
+				{
+					// Females with no high school degree.
+					name: "no-hs-degree-female",
+					title: "No High School Degree",
+					expression:
+						"$feature.B15002_020E + $feature.B15002_021E + $feature.B15002_022E + $feature.B15002_023E + $feature.B15002_024E + $feature.B15002_025E + $feature.B15002_026E + $feature.B15002_027E",
+				},
+				{
+					// Males with no high school degree.
+					name: "no-hs-degree-male",
+					title: "No High School Degree",
+					expression:
+						"$feature.B15002_003E + $feature.B15002_004E + $feature.B15002_005E + $feature.B15002_006E + $feature.B15002_007E + $feature.B15002_008E + $feature.B15002_009E + $feature.B15002_010E",
 				},
 			],
 			fieldInfos: [
@@ -103,6 +121,12 @@ require([
 					},
 				},
 				// Field formatting for female fields.
+				{
+					fieldName: "expression/no-hs-degree-female",
+					format: {
+						digitSeparator: true,
+					},
+				},
 				{
 					fieldName: "B15002_028E",
 					label: "High School",
@@ -146,6 +170,12 @@ require([
 					},
 				},
 				// Field formatting for male fields.
+				{
+					fieldName: "expression/no-hs-degree-male",
+					format: {
+						digitSeparator: true,
+					},
+				},
 				{
 					fieldName: "B15002_011E",
 					label: "High School",
@@ -206,6 +236,11 @@ require([
 				position: "top-right",
 				breakpoint: false,
 			},
+		},
+		constraints: {
+			minScale: 2000000,
+			maxScale: 0,
+			snapToZoom: false,
 		},
 	});
 	view.ui.add(new Legend({ view }), "bottom-left");
