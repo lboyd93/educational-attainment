@@ -18,6 +18,8 @@ require([
 				{
 					type: "media",
 					title: "Educational Attainment",
+					description:
+						"The educational attainment for adults (male & female) 25 years and older.",
 					mediaInfos: [
 						{
 							type: "column-chart",
