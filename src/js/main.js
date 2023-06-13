@@ -5,22 +5,29 @@ require([
 	"esri/widgets/Legend",
 	"esri/core/reactiveUtils",
 ], (Map, MapView, FeatureLayer, Legend, reactiveUtils) => {
+	// Create a feature layer.
 	const tractsLayer = new FeatureLayer({
 		url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/ACS_Educational_Attainment_Boundaries/FeatureServer/2",
 		outFields: ["*"],
+		// Create a popup template.
 		popupTemplate: {
 			title: "{NAME} in {COUNTY}, {STATE}",
 			content: [
+				// Text content that shows information from specific fields that are formatted using the FieldInfos.
 				{
 					type: "text",
 					text: `An estimated <b>{B15002_calc_numLTHSE}</b> adults age 25+ are not high school graduates, which is approximately <b>{B15002_calc_pctLTHSE}%</b> of all adults age 25+.`,
 				},
+				// Media content that will display multiple charts that can be paged through.
 				{
 					type: "media",
 					title: "Educational Attainment",
 					description:
 						"The educational attainment for adults (male & female) 25 years and older.",
+					// Define individual charts to showcase in the media pagination.
 					mediaInfos: [
+						// This will be a column chart to show information regarding all adults within
+						// the selected county tract.
 						{
 							type: "column-chart",
 							title: "Highest Education - All Adults",
@@ -34,6 +41,8 @@ require([
 								],
 							},
 						},
+						// This will be a pie chart to show information regarding all adult females within
+						// the selected county tract.
 						{
 							type: "pie-chart",
 							title: "Highest Education - Female",
@@ -49,6 +58,8 @@ require([
 								],
 							},
 						},
+						// This will be a pie chart to show information regarding all adult males within
+						// the selected county tract.
 						{
 							type: "pie-chart",
 							title: "Highest Education - Male",
@@ -67,6 +78,7 @@ require([
 					],
 				},
 			],
+			// Create Arcade expressions to create your own value from available fields.
 			expressionInfos: [
 				{
 					// Females with no high school degree.
@@ -83,6 +95,7 @@ require([
 						"$feature.B15002_003E + $feature.B15002_004E + $feature.B15002_005E + $feature.B15002_006E + $feature.B15002_007E + $feature.B15002_008E + $feature.B15002_009E + $feature.B15002_010E",
 				},
 			],
+			// Format the fields so that they have an understandable label and a digit separator.
 			fieldInfos: [
 				// Field formatting for total adult population.
 				{
@@ -222,6 +235,7 @@ require([
 		},
 	});
 
+	// Create a MapView that references a map with the feature layer configured above.
 	const view = new MapView({
 		container: viewDiv,
 		map: new Map({
@@ -230,6 +244,7 @@ require([
 		}),
 		zoom: 9,
 		center: [-117.66256, 33.93037],
+		// Dock the popup in the upper right corner of the view.
 		popup: {
 			dockEnabled: true,
 			dockOptions: {
@@ -237,11 +252,13 @@ require([
 				breakpoint: false,
 			},
 		},
+		// Add constraints on the view so that user's cannot zoom out where the data doesn't exist.
 		constraints: {
 			minScale: 2000000,
 			maxScale: 0,
 			snapToZoom: false,
 		},
 	});
+	// Add a Legend to the view.
 	view.ui.add(new Legend({ view }), "bottom-left");
 });
