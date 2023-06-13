@@ -2,9 +2,9 @@ require([
 	"esri/Map",
 	"esri/views/MapView",
 	"esri/layers/FeatureLayer",
+	"esri/widgets/Expand",
 	"esri/widgets/Legend",
-	"esri/core/reactiveUtils",
-], (Map, MapView, FeatureLayer, Legend, reactiveUtils) => {
+], (Map, MapView, FeatureLayer, Expand, Legend) => {
 	// Create a feature layer.
 	const tractsLayer = new FeatureLayer({
 		url: "https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/ACS_Educational_Attainment_Boundaries/FeatureServer/2",
@@ -248,7 +248,7 @@ require([
 		popup: {
 			dockEnabled: true,
 			dockOptions: {
-				position: "top-right",
+				position: "bottom-right",
 				breakpoint: false,
 			},
 		},
@@ -259,6 +259,7 @@ require([
 			snapToZoom: false,
 		},
 	});
-	// Add a Legend to the view.
-	view.ui.add(new Legend({ view }), "bottom-left");
+
+	// Add the Expand widget that holds the Legend to the view.
+	view.ui.add(new Expand({ view, content: new Legend({ view }) }), "top-left");
 });
